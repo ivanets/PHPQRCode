@@ -9,7 +9,7 @@ Add the required module to your `composer.json` file:
     {
         "require": {
             ...
-            "ivanets/phpqrcode": "1.0.1"
+            "ivanets/phpqrcode": "1.0.2"
             ...
         }
     }
