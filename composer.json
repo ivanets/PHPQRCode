@@ -1,8 +1,8 @@
 {
-    "name": "aferrandini/phpqrcode",
-    "description": "PHPQRCode porting and changed for PHP 5.3 compatibility",
+    "name": "ivanets/phpqrcode",
+    "description": "PHPQRCode porting and changed for PHP 5.4 compatibility",
     "keywords": ["php", "qrcode", "barcode"],
-    "homepage": "https://github.com/aferrandini/PHPQRCode",
+    "homepage": "https://github.com/ivanets/PHPQRCode",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -10,10 +10,15 @@
             "name": "Ariel Ferrandini",
             "email": "arielferrandini@gmail.com",
             "homepage": "http://www.ferrandini.com/"
+        },
+        {
+            "name": "Eugene Ivanets",
+            "email": "evgeniy.ivanets@waiterok.com",
+            "homepage": "http://waiterok.com/"
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.4.0"
     },
     "autoload": {
         "psr-0": { "PHPQRCode": "lib/" }

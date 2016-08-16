@@ -143,6 +143,18 @@ class QRcode {
     }
 
     //----------------------------------------------------------------------
+    public static function waiterok($text, $outfile = false, $level = Constants::QR_ECLEVEL_H, $ratio = 15)
+    {
+        $enc = QRencode::factory($level);
+        ob_start();
+        $tab = $enc->encode($text);
+        $err = ob_get_contents();
+        ob_end_clean();
+        $qrpr = new QRPrettyRender($tab, $ratio);
+        return $qrpr->render($outfile);
+    }
+
+    //----------------------------------------------------------------------
     public static function text($text, $outfile = false, $level = Constants::QR_ECLEVEL_L, $size = 3, $margin = 4)
     {
         $enc = QRencode::factory($level, $size, $margin);

@@ -9,7 +9,7 @@ Add the required module to your `composer.json` file:
     {
         "require": {
             ...
-            "aferrandini/phpqrcode": "1.0.1"
+            "ivanets/phpqrcode": "1.0.1"
             ...
         }
     }
@@ -21,7 +21,7 @@ Then run the command `composer update`.
 
 Sample code:
 
-    \PHPQRCode\QRcode::png("Test", "/tmp/qrcode.png", 'L', 4, 2);
+    \PHPQRCode\QRcode::waiterok("Test", "/tmp/qrcode.png", 'H', 20);
 
 This code will generate a PNG file on '/tmp/qrcode.png' with a QRCode that contains the word 'Test'.
 
