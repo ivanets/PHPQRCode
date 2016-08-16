@@ -10,7 +10,7 @@ namespace PHPQRCode;
 class QRPrettyRender
 {
     const EYE_SIZE = 7;
-    const LOGO_PATH = 'logo_transparent.png';
+    const LOGO_PATH = 'logo_squarq_191x191.png';
 
     const TOP_LEFT_EYE = 0;
     const BOTTOM_LEFT_EYE = 1;
@@ -161,7 +161,7 @@ class QRPrettyRender
     }
 
     private function renderLogo(){
-        $logo = imagecreatefrompng(getcwd().'/'.self::LOGO_PATH);
+        $logo = imagecreatefrompng('https://waiterok.com/img/'.self::LOGO_PATH);
         
         $halfSize = $this->width*$this->pixelRatio/10;
 
