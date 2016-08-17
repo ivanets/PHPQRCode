@@ -143,14 +143,14 @@ class QRcode {
     }
 
     //----------------------------------------------------------------------
-    public static function waiterok($text, $outfile = false, $level = Constants::QR_ECLEVEL_H, $ratio = 15)
+    public static function waiterok($text, $outfile = false, $level = Constants::QR_ECLEVEL_H, $ratio = 15, $resources = [])
     {
         $enc = QRencode::factory($level);
         ob_start();
         $tab = $enc->encode($text);
         $err = ob_get_contents();
         ob_end_clean();
-        $qrpr = new QRPrettyRender($tab, $ratio);
+        $qrpr = new QRPrettyRender($tab, $ratio, $resources);
         return $qrpr->render($outfile);
     }
 

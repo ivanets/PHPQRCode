@@ -36,11 +36,12 @@ class QRPrettyRender
 
 
     private $eyeCentersCoords = [];
+    private $resources = [];
 
-
-    function __construct($qr_data, $ratio = 10)
+    function __construct($qr_data, $ratio = 10, $resources = [])
     {
         $this->qr_data = $qr_data;
+        $this->resources = $resources;
         $this->pixelRatio = max($this->pixelRatio, $ratio);
         
 
@@ -116,14 +117,50 @@ class QRPrettyRender
     }
 
     private function renderPoint($x, $y) {
-        imagefilledellipse(
-            $this->im,
-            $x * $this->pixelRatio + $this->pixelRatio / 2,
-            $y * $this->pixelRatio + $this->pixelRatio / 2,
-            $this->pixelRatio,
-            $this->pixelRatio, 
-            $this->red
-        );
+        if(
+            $x >= $this->width/2-4 
+            && $y >= $this->width/2-4 
+            && $x < $this->width/2+3 
+            && $y < $this->width/2+3
+        ){
+            return $this->renderEmpty($x, $y);
+        }
+        if($dot = $this->resources['dot']){
+
+            imagecopyresampled(
+                $this->im,
+                $dot,
+                
+                $x * $this->pixelRatio,
+                $y * $this->pixelRatio,
+
+                0,
+                0,
+
+                $this->pixelRatio,
+                $this->pixelRatio,
+                
+                20,
+                20
+            );
+        } else {
+            // imagefilledrectangle(
+            //     $this->im,
+            //     $x * $this->pixelRatio,
+            //     $y * $this->pixelRatio,
+            //     $x * $this->pixelRatio + $this->pixelRatio,
+            //     $y * $this->pixelRatio + $this->pixelRatio,
+            //     $this->black
+            // );
+            imagefilledellipse(
+                $this->im,
+                $x * $this->pixelRatio + $this->pixelRatio / 2,
+                $y * $this->pixelRatio + $this->pixelRatio / 2,
+                $this->pixelRatio,
+                $this->pixelRatio, 
+                $this->red
+            );
+        }
     }
 
     private function renderEmpty($x, $y) {
@@ -161,23 +198,42 @@ class QRPrettyRender
     }
 
     private function renderLogo(){
-        $logo = imagecreatefrompng('https://waiterok.com/img/'.self::LOGO_PATH);
-        
-        $halfSize = $this->width*$this->pixelRatio/10;
+        if($logo = $this->resources['logo']){
 
-        imagecopyresampled(
-            $this->im,
-            $logo,
-            round(($this->width * $this->pixelRatio)/2-$halfSize),
-            round(($this->height * $this->pixelRatio)/2-$halfSize),
-            0,
-            0,
-            $halfSize*2,
-            $halfSize*2,
-            191,
-            191
-        );
-        imagedestroy($logo);
+            $halfSize = $this->width*$this->pixelRatio/10;
+
+            imagecopyresampled(
+                $this->im,
+                $logo,
+                round(($this->width * $this->pixelRatio)/2-$halfSize),
+                round(($this->height * $this->pixelRatio)/2-$halfSize),
+                0,
+                0,
+                $halfSize*2,
+                $halfSize*2,
+                294,
+                294
+            );
+
+        } else {
+            $logo = imagecreatefrompng('https://waiterok.com/img/'.self::LOGO_PATH);
+            
+            $halfSize = $this->width*$this->pixelRatio/10;
+
+            imagecopyresampled(
+                $this->im,
+                $logo,
+                round(($this->width * $this->pixelRatio)/2-$halfSize),
+                round(($this->height * $this->pixelRatio)/2-$halfSize),
+                0,
+                0,
+                $halfSize*2,
+                $halfSize*2,
+                191,
+                191
+            );
+            imagedestroy($logo);
+        }
     }
 
     public function render($filename = false){
@@ -195,8 +251,10 @@ class QRPrettyRender
                         case self::TOP_RIGHT_EYE:
                         case self::BOTTOM_LEFT_EYE:
                             $this->renderEye($line_number, $column_number);
+                            // $this->renderEye($line_number, $column_number);
                             break;
                         case self::EYE_CENTER:
+                            // $this->renderPoint($line_number, $column_number);
                             $this->renderEmpty($line_number, $column_number);
                             break;
                         case self::QR_POINT:
@@ -213,6 +271,7 @@ class QRPrettyRender
         }
         $this->renderCenters();
         $this->renderLogo();
+
 
         if(!$filename) {
             header('Content-Type: image/png');
